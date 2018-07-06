@@ -36,7 +36,7 @@ class DFex:
         elif drop==1: new_df=df.drop(new_index, axis=1)
         return new_df
 
-    def split_str_num(self, data, top_industry=1000):
+    def split_str_num(self, data):
         '''
         データフレームの文字と数字を切り分ける
         '''
