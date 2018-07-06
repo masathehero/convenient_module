@@ -1,6 +1,5 @@
 # coding: utf-8
-
-#データフレームのカラムからの抽出クラス
+import re
 import pandas as pd
 import numpy as np
 from math import log10, floor
@@ -36,7 +35,20 @@ class DFex:
         if drop==0: new_df=df.loc[:, new_index]
         elif drop==1: new_df=df.drop(new_index, axis=1)
         return new_df
-    
+
+    def split_str_num(self, data, top_industry=1000):
+        '''
+        データフレームの文字と数字を切り分ける
+        '''
+        pattern_int=r'([0-9]+$)'
+        pattern_str=r'([^0-9]+)'
+        number=[]
+        comp_name=[]
+        data=data.dropna()
+        dummy=data.applymap(lambda x: number.append(int(re.findall(pattern_int, x)[0])))
+        dummy=data.applymap(lambda x: comp_name.append(re.findall(pattern_str, x)[0][:-1]))
+        splited_data=pd.concat([pd.Series(comp_name), pd.Series(number)], axis=1).drop_duplicates()##このdrop_duplicateちょっと危険かも
+        return splited_data 
 
 
 #date time型への変換
